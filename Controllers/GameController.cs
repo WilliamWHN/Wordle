@@ -6,24 +6,22 @@ using Wordle.Models;
 namespace Wordle.Controllers
 {
     [Authorize]
-    public class HomeController : Controller
+    public class GameController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<GameController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public GameController(ILogger<GameController> logger)
         {
             _logger = logger;
         }
 
         public IActionResult Index()
         {
-            return View();
+            Word word = new Word();
+            return View("index", word);
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+        
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
