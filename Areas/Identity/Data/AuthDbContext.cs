@@ -5,12 +5,14 @@ using Wordle.Areas.Identity.Data;
 
 namespace Wordle.Data;
 
-public class AuthDbContext : IdentityDbContext<AuthUser>
+public class AuthDbContext : IdentityDbContext<User>
 {
     public AuthDbContext(DbContextOptions<AuthDbContext> options)
         : base(options)
     {
     }
+
+    public DbSet<Score> Scores { get;}
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

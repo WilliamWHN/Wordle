@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Wordle.Data;
 
@@ -10,9 +11,10 @@ using Wordle.Data;
 namespace Wordle.Migrations.AuthDb
 {
     [DbContext(typeof(AuthDbContext))]
-    partial class AuthDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220218081401_RemoveScoresTable")]
+    partial class RemoveScoresTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -151,25 +153,6 @@ namespace Wordle.Migrations.AuthDb
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Wordle.Areas.Identity.Data.Score", b =>
-                {
-                    b.Property<int>("ScoreId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("ScorePoints")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("varchar(255)");
-
-                    b.HasKey("ScoreId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Scores");
-                });
-
             modelBuilder.Entity("Wordle.Areas.Identity.Data.User", b =>
                 {
                     b.Property<string>("Id")
@@ -283,15 +266,6 @@ namespace Wordle.Migrations.AuthDb
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Wordle.Areas.Identity.Data.Score", b =>
-                {
-                    b.HasOne("Wordle.Areas.Identity.Data.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }
