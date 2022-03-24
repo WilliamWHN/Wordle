@@ -1,0 +1,21 @@
+﻿@model Word
+@{
+	ViewData["Title"] = "Game";
+}
+<script src="~/js/game.js"></script>
+<div>
+	<input id="word" value="@Model.word"/>
+	Nombres: @Model.size
+
+	<div class="d-flex flex-column">
+		@for(int i=1; i<7; i++)
+		{
+			<div class="attempt-@i d-flex justify-content-center p-2">
+				@for (int l=0;l<Model.size;l++)
+				{
+					<div class="d-flex case-@l border rounded bg-dark border-dark mx-1 box-letter text-white"><span class="m-auto"></span></div>
+				}
+			</div>
+		}	
+	</div>	
+</div>
