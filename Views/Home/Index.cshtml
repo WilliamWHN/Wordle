@@ -3,5 +3,20 @@
 }
 
 <div class="text-center text-white">
-    <h1 class="fw-bold mb-2 text-uppercase">Welcome</h1>
+    <div class="container py-5">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5 fw-bold text-uppercase display-6">
+        <div class="card bg-dark text-white" style="border-radius: 1rem;">
+          <div class="card-body p-5 text-center">
+              <a class="text-decoration-none text-white" asp-area="" asp-controller="Game" asp-action="Index">jouer</a>
+          </div>
+        </div>
+        <div class="card bg-dark text-white mt-5" style="border-radius: 1rem;">
+          <div class="card-body p-5 text-center">
+              <a class="text-decoration-none text-white" asp-area="" asp-controller="Score" asp-action="Index">scores</a>
+          </div>
+        </div>
+      </div>
+    </div> 
+    </div>
 </div>

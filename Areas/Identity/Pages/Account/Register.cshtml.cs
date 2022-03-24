@@ -24,17 +24,17 @@ namespace Wordle.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<AuthUser> _signInManager;
-        private readonly UserManager<AuthUser> _userManager;
-        private readonly IUserStore<AuthUser> _userStore;
-        private readonly IUserEmailStore<AuthUser> _emailStore;
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly IUserStore<User> _userStore;
+        private readonly IUserEmailStore<User> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
-            UserManager<AuthUser> userManager,
-            IUserStore<AuthUser> userStore,
-            SignInManager<AuthUser> signInManager,
+            UserManager<User> userManager,
+            IUserStore<User> userStore,
+            SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
@@ -144,27 +144,27 @@ namespace Wordle.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private AuthUser CreateUser()
+        private User CreateUser()
         {
             try
             {
-                return Activator.CreateInstance<AuthUser>();
+                return Activator.CreateInstance<User>();
             }
             catch
             {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(AuthUser)}'. " +
-                    $"Ensure that '{nameof(AuthUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+                throw new InvalidOperationException($"Can't create an instance of '{nameof(Data.User)}'. " +
+                    $"Ensure that '{nameof(Data.User)}' is not an abstract class and has a parameterless constructor, or alternatively " +
                     $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
         }
 
-        private IUserEmailStore<AuthUser> GetEmailStore()
+        private IUserEmailStore<User> GetEmailStore()
         {
             if (!_userManager.SupportsUserEmail)
             {
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
-            return (IUserEmailStore<AuthUser>)_userStore;
+            return (IUserEmailStore<User>)_userStore;
         }
     }
 }
