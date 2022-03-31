@@ -27,7 +27,7 @@ namespace Wordle.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] JsonElement entity)
+        public async Task<IActionResult> Create([FromBody] JsonElement value)
         {
             System.Security.Claims.ClaimsPrincipal currentUser = this.User;
             var user = await _userManager.GetUserAsync(User); // Get user id:
@@ -35,12 +35,13 @@ namespace Wordle.Controllers
             var score = new Score();
 
             score.ScorePoints = 1;
+            score.Tries = 3;
             score.User = user;
 
-            _context.Score.Add(score);
+            _context.Scores.Add(score);
             _context.SaveChanges();
 
-            return Json(score);
+            return new StatusCodeResult(200);
         }
 
 
