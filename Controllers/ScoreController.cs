@@ -5,6 +5,7 @@ using Wordle.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Text.Json;
 using Wordle.Areas.Identity.Data;
+using System.Text;
 
 namespace Wordle.Controllers
 {
@@ -19,24 +20,36 @@ namespace Wordle.Controllers
             _context = context;
             _userManager = userManager;
         }
-
+        
         public IActionResult Index()
         {
-            Word word = new Word();
-            return View("index");
+            List<Score> scores = _context.Scores.Where(s => s.User.Id == _userManager.GetUserId(User)).OrderBy(s => s.Date).ToList();
+            if(scores == null)
+            {
+                return NotFound();
+            }
+            return View("index", scores);
+        }
+
+        public IActionResult HighScores()
+        {
+            List<Score> scores = _context.Scores.Where(s => s.User.Id == _userManager.GetUserId(User)).OrderByDescending(s => s.ScorePoints).Take(3).ToList();
+            if (scores == null)
+            {
+                return NotFound();
+            }
+            return View("index", scores);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] JsonElement value)
+        public async Task<IActionResult> Create([FromBody] Score score)
         {
+
             System.Security.Claims.ClaimsPrincipal currentUser = this.User;
-            var user = await _userManager.GetUserAsync(User); // Get user id:
+            var user = await _userManager.GetUserAsync(User); // Get user id:g
 
-            var score = new Score();
-
-            score.ScorePoints = 1;
-            score.Tries = 3;
             score.User = user;
+            score.Date = DateTime.Now;
 
             _context.Scores.Add(score);
             _context.SaveChanges();

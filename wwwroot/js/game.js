@@ -19,7 +19,7 @@
                     take = take.slice(0,-1)
                 }
                 else if (key == "Enter") {
-                    validateWord(take)
+                    validateWord(take, attempt)
                 }
                 else {
                     event.preventDefault()
@@ -37,13 +37,13 @@
 
     });
 
-    function validateWord(word) {
+    function validateWord(word, tries) {
         if (word === wordToGuess) {
             $.ajax({
                 url: 'Score/Create',
                 type: 'POST',
                 contentType: 'application/json;',
-                data: JSON.stringify({ attempts: 1, points: 100 }),
+                data: JSON.stringify({ Tries: attempt, ScorePoints: word.length * 100 / attempt, Word: word }),
                 success: function (e) {
                     gameover = true;
                     alert("Bien joué, vous avez trouvé le mot en " + attempt + "essais")
