@@ -11,7 +11,7 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<AuthDbContext>();builder.Services.AddDbContext<AuthDbContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(8, 0, 27))));
+    options.UseMySql(Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb"), new MySqlServerVersion(new Version(8, 0, 27))));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
