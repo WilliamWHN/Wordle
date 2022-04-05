@@ -4,10 +4,23 @@ using Microsoft.AspNetCore.Identity;
 using Wordle.Areas.Identity.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+bool isProduction = builder.Configuration["ASPNETCORE_ENVIRONMENT"] == "Production" ? true : false;
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+// Configure the JS minifier only in production
+if (isProduction)
+{
+    builder.Services.AddWebOptimizer(pipeline =>
+    {
+        pipeline.MinifyCssFiles("css/*.css");
+        pipeline.AddCssBundle("/css/bundle.css", "css/*.css");
+        pipeline.MinifyJsFiles("js/*.js");
+        pipeline.AddJavaScriptBundle("/js/bundle.js", "js/*.js");
+    });
+}
 
 builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<AuthDbContext>();builder.Services.AddDbContext<AuthDbContext>(options =>
@@ -22,6 +35,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseWebOptimizer();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
