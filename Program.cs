@@ -4,14 +4,27 @@ using Microsoft.AspNetCore.Identity;
 using Wordle.Areas.Identity.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+bool isProduction = builder.Configuration["ASPNETCORE_ENVIRONMENT"] == "Production" ? true : false;
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
+// Configure the JS minifier only in production
+if (isProduction)
+{
+    builder.Services.AddWebOptimizer(pipeline =>
+    {
+        pipeline.MinifyCssFiles("css/*.css");
+        pipeline.AddCssBundle("/css/bundle.css", "css/*.css");
+        pipeline.MinifyJsFiles("js/*.js");
+        pipeline.AddJavaScriptBundle("/js/bundle.js", "js/*.js");
+    });
+}
+
 builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<AuthDbContext>();builder.Services.AddDbContext<AuthDbContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(8, 0, 27))));
+    options.UseMySql(Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb"), new MySqlServerVersion(new Version(8, 0, 27))));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -22,6 +35,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseWebOptimizer();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

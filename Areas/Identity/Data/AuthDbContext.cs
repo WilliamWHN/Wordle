@@ -12,7 +12,7 @@ public class AuthDbContext : IdentityDbContext<User>
     {
     }
 
-    public DbSet<Score> Scores { get;}
+    public DbSet<Score> Scores { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
